@@ -14,13 +14,20 @@ pipeline {
 
     //build 
     stages {
-        stage('Get the vesion') {
+        stage('Get the version') {
             steps {
                 script{ //script is groovey not shell
                     def packageJson = readJSON file: 'package.json' //def is variable initilization
                     packageVersion = packageJson.version
                     echo "application version: $packageVersion"
                 }
+            }
+        }
+        stage('Install dependencies') {
+            steps {
+                sh """
+                    npm install 
+                """
             }
         }
         stage('Test') {
