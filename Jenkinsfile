@@ -30,10 +30,12 @@ pipeline {
                 """
             }
         }
-        stage('Build') {
+        stage('Build') { // added -q to silent the logs otherwise it will consume jenkins master memory
             steps {
                  sh """
                     ls -la
+                    zip -q -r catalogue.zip ./* -x ".git" -x ".zip" 
+                    ls -ltr
                 """
             }
         }
@@ -57,5 +59,5 @@ pipeline {
         success{
             echo 'I will say hello when pipeline is success'
         }
-    }
+    } // After pipeline directory must be deleted from pipeline using deldir()
 }
