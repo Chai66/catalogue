@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script{ //script is groovey not shell
                     def packageJson = readJSON file: 'package.json' //def is variable initilization
-                    packageVersion = packageJson.vesion
+                    packageVersion = packageJson.version
                     echo "application version: $packageVersion"
                 }
             }
