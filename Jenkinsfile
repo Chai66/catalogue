@@ -61,9 +61,9 @@ pipeline {
         }
         stage('Deploy') { // build job will let catalogue-deploy to wait until catalogue pipeline finsihes
             steps {
-                build job: "catalogue-deploy", wait: true, parameters:[
-                    string(name: 'version',value: "${packageVersion}")
-                    string(name: 'environment',value:'dev')
+                build job: "catalogue-deploy", wait: true, parameters: [
+                    string(name: 'version', value: "${packageVersion}"),
+                    string(name: 'environment', value: "dev")
                 ]
             }
         }
