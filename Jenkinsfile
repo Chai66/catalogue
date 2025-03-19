@@ -40,7 +40,7 @@ pipeline {
                 """
             }
         }
-        stage('Publish Artifact') { // added -q to silent the logs otherwise it will consume jenkins master memory
+        stage('Publish Artifact') { 
             steps {
                 nexusArtifactUploader(
                         nexusVersion: 'nexus3',
@@ -49,7 +49,7 @@ pipeline {
                         groupId: 'com.roboshop',
                         version: "${packageVersion}",
                         repository: 'catalogue',
-                        credentialsId: 'CredentialsId',
+                        credentialsId: 'nexus-auth',
                         artifacts: [
                             [artifactId: 'catalogue',
                             classifier: '',
