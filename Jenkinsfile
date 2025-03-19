@@ -59,11 +59,12 @@ pipeline {
                     )
             }
         }
-        stage('Deploy') {
+        stage('Deploy') { // build job will let catalogue-deploy to wait until catalogue pipeline finsihes
             steps {
-                sh """
-                echo "Here I wrote shell script"
-                """
+                build job: "catalogue-deploy", wait: true, parameters:[
+                    string(name: 'version',value: "${packageVersion}")
+                    string(name: 'environment',value:'dev')
+                ]
             }
         }
 
