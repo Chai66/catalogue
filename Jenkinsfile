@@ -12,6 +12,12 @@ pipeline {
         timeout(time: 1, unit: 'HOURS') //it will allow to run this pipeline for 1 hour to execute
         disableConcurrentBuilds()  //this wont allow to run 2 builds at a time
     }
+    parameters {
+        // string(name: 'version', defaultValue: '', description: 'What is the artifact version?')
+        // string(name: 'environment', defaultValue: 'dev', description: 'What is environment?')
+        booleanParam(name: 'Deploy', defaultValue: 'false', description: 'Toggle this value')
+        // booleanParam(name: 'Create', defaultValue: 'false', description: 'What is Create?')
+    }
 
     //build 
     stages {
@@ -45,7 +51,7 @@ pipeline {
                 """
             }
         }
-        stage('Build') { // added -q to silent the logs otherwise it will consume jenkins master memory
+        stage('Build') { // Converting catalogue to .zip file as an artifact, added -q to silent the logs otherwise it will consume jenkins master memory
             steps {
                  sh """
                     ls -la
@@ -54,7 +60,7 @@ pipeline {
                 """
             }
         }
-        stage('Publish Artifact') { 
+        stage('Publish Artifact') { //copying build from previous step and publishing the artifact in nexus repository
             steps {
                 nexusArtifactUploader(
                         nexusVersion: 'nexus3',
@@ -74,6 +80,9 @@ pipeline {
             }
         }
         stage('Deploy') { // build job will let catalogue-deploy to wait until catalogue pipeline finsihes
+            when (
+                params.Deploy = true //checking the parameter toggle given at top
+            )
             steps {
                 build job: "catalogue-deploy", wait: true, parameters: [
                     string(name: 'version', value: "${packageVersion}"),
