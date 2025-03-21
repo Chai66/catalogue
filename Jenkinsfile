@@ -31,6 +31,20 @@ pipeline {
                 """
             }
         }
+        stage('Unit tests') {
+            steps {
+                sh """
+                    echo "unit tests will run here" 
+                """
+            }
+        }
+        stage('Sonar Scan') { //sonar-scanner single command will automatically sonar-project properties, it will start scanning and upload the results
+            steps {
+                sh """
+                    sonar-scanner 
+                """
+            }
+        }
         stage('Build') { // added -q to silent the logs otherwise it will consume jenkins master memory
             steps {
                  sh """
