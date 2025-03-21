@@ -81,7 +81,9 @@ pipeline {
         }
         stage('Deploy') { // build job will let catalogue-deploy to wait until catalogue pipeline finsihes
             when (
-                params.Deploy = true //checking the parameter toggle given at top
+                expression{
+                    params.Deploy = true //checking the parameter toggle given at top
+                }
             )
             steps {
                 build job: "catalogue-deploy", wait: true, parameters: [
