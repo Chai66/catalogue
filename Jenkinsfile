@@ -44,7 +44,7 @@ pipeline {
                 """
             }
         }
-        stage('Sonar Scan') { //sonar-scanner single command will automatically sonar-project properties, it will start scanning and upload the results
+        stage('Sonar Scan') { //sonar-scanner single command will automatically read sonar-project properties, it will start scanning and upload the results
             steps {
                 sh """
                     sonar-scanner 
@@ -82,7 +82,7 @@ pipeline {
         stage('Deploy') { // build job will let catalogue-deploy to wait until catalogue pipeline finsihes
             when (
                 expression{
-                    params.Deploy = true //checking the parameter toggle given at top
+                    params.Deploy == 'true' / /checking the parameter toggle given at top
                 }
             )
             steps {
